@@ -8,21 +8,22 @@ const PhoneEmail = () => {
   const [error, setError] = useState(null);
   const [expandedSections, setExpandedSections] = useState({});
 
-  // Function to fetch data from API
+  // Function to fetch data from Flask backend
   const fetchProfileData = async () => {
     try {
-      const response = await fetch('https://leakosintapi.com/', {
+      const response = await fetch('https://spiderhuntstechnologies.com/pentagraph/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token: "6653420429:jJSmds3a",
-          request: "19177839188",
-          limit: 100,
-          lang: "en"
+          phone_number: "19177839188"  
         })
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
       const data = await response.json();
       
@@ -30,7 +31,7 @@ const PhoneEmail = () => {
       const processedData = processApiResponse(data);
       setProfileData(processedData);
     } catch (err) {
-      setError('Failed to fetch profile data');
+      setError(`Failed to fetch profile data: ${err.message}`);
     } finally {
       setLoading(false);
     }
